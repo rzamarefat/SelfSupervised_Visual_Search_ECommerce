@@ -4,6 +4,7 @@ import GridView from '../components/GridView'
 import Navbar from '../components/GridView'
 import axios from 'axios'
 import { putImages } from '../redux/actions'
+import Loader from '../components/Loader'
 
 
 
@@ -35,6 +36,7 @@ const ExplorePage = () => {
                             <h1>Explore</h1>    
                         </div>
                         <hr/>
+                        {!images && <Loader/>}
                         {images && <GridView images={images}/>}
                     </div>
                 </row>
