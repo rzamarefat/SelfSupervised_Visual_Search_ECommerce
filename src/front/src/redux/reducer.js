@@ -1,16 +1,13 @@
 import initialState from "./initiaState"
-import { INCREMENT, DECREMENT } from "./actionTypes";
+import { PUT_IMAGES_FROM_BACK_TO_FRONT } from "./actionTypes";
 
 
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        case INCREMENT:
+        case PUT_IMAGES_FROM_BACK_TO_FRONT:
             return {
-                ...state, initialValue: state.initialValue + 1
-            }
-        case DECREMENT:
-            return {
-                ...state, initialValue : state.initialValue - 1
+                ...state, 
+                images : action.payload
             }
 
         default:

@@ -1,40 +1,18 @@
 import React from 'react'
 import GridItem from './GridItem'
 
-const GridView = () => {
+const GridView = ({images}) => {
   return (
     <>
         <div className='row'>
-            <div className='col-sm-3'>
-                <GridItem/> 
-            </div>
-            <div className='col-sm-3'>
-                <GridItem/> 
-            </div>
-            <div className='col-sm-3'>
-                <GridItem/> 
-            </div>
-            <div className='col-sm-3'>
-                <GridItem/> 
-            </div>
-            <div className='col-sm-3'>
-                <GridItem/> 
-            </div>
-            <div className='col-sm-3'>
-                <GridItem/> 
-            </div>
-            <div className='col-sm-3'>
-                <GridItem/> 
-            </div>
-            <div className='col-sm-3'>
-                <GridItem/> 
-            </div>
-            <div className='col-sm-3'>
-                <GridItem/> 
-            </div>
-            <div className='col-sm-3'>
-                <GridItem/> 
-            </div>
+            {images.map(img => {
+                return (
+                    <div className='col-sm-3'>
+                        <GridItem img={img}/>
+                    </div>
+                )
+            })}
+            
         </div>
 
         

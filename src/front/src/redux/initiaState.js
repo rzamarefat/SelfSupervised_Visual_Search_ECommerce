@@ -1,5 +1,5 @@
 const initialState = {
-    "initialValue": 0
+    "images": [],
 }
 
 
