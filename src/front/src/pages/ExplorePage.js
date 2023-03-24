@@ -1,8 +1,15 @@
+import { useEffect } from 'react'
 import GridView from '../components/GridView'
 import Navbar from '../components/GridView'
+import axios from 'axios'
 
 
 const ExplorePage = () => {
+    useEffect(()=>{
+        axios.get("http://127.0.0.1:8000").then(res => console.log(res))
+    })
+        
+
     return (
         <>
             <div className='container'>
