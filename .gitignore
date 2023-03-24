@@ -1,0 +1,12 @@
+__pycache__
+archive.zip
+images/
+
+lightning_logs/
+myntradataset/
+styles.csv
+test_data/
+
+predict_simclr.py
+train_simclr.py
+embs

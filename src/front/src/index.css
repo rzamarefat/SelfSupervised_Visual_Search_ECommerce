@@ -1,0 +1,19 @@
+.grid-card{
+    border-radius: 1.5rem;
+    
+}
+
+
+.grid-card-image{
+    width: 100%;
+}
+
+.grid-card-image:hover{
+    cursor: pointer;
+    animation: zoom 0.5 ease-in 0;
+}
+
+@keyframes zoom {
+    0%   { width: 100%;}
+    100% { width: 150%;}
+  }
