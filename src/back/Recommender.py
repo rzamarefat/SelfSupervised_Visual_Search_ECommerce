@@ -9,11 +9,12 @@ import faiss
 import numpy as np
 import faiss
 from glob import glob
+import os
 
 class Recommender():
     def __init__(self):
         self.device = 'cpu'
-        self.path_to_embs = "/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/simclr_embs/*"
+        self.path_to_embs = "/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/simclr_embs"
 
         try:
             self._simclr = SimCLRModel()
@@ -36,20 +37,20 @@ class Recommender():
         self._input_size = 128
         
 
-        self.test_transforms = torchvision.transforms.Compose([
-                        torchvision.transforms.Resize((self._input_size, self._input_size)),
-                        torchvision.transforms.ToTensor(),
-                        torchvision.transforms.Normalize(
-                            mean=lightly.data.collate.imagenet_normalize['mean'],
-                            std=lightly.data.collate.imagenet_normalize['std'],
-                        )
-        ])
+        # self.test_transforms = torchvision.transforms.Compose([
+        #                 torchvision.transforms.Resize((self._input_size, self._input_size)),
+        #                 torchvision.transforms.ToTensor(),
+        #                 torchvision.transforms.Normalize(
+        #                     mean=lightly.data.collate.imagenet_normalize['mean'],
+        #                     std=lightly.data.collate.imagenet_normalize['std'],
+        #                 )
+        # ])
 
     def _build_faiss(self):
 
         self._faiss_index = faiss.IndexFlatIP(self._embs_dim)
 
-        embs = [(self._read_npy(f), f.split("/")[-1].split(".")[0]) for f in sorted(glob(self.path_to_embs))]
+        embs = [(self._read_npy(f), f.split("/")[-1].split(".")[0]) for f in sorted(glob(os.path.join(self.path_to_embs, "*")))]
 
         
         self.map_required_for_faiss_fetch = {}
@@ -58,7 +59,7 @@ class Recommender():
             self.map_required_for_faiss_fetch[index] = emb_name
 
     def gen_embs(self, image):
-        image = self.test_transforms(image)
+        # image = self.test_transforms(image)
         image = torch.unsqueeze(image, dim=0)
 
         image = image.to(self.device)
@@ -75,14 +76,18 @@ class Recommender():
         return data
 
 
-    def recommend(self, query_image, k=10):
-        query_emb = self.gen_embs(query_image)
+    def recommend(self, query_image_id, k=10):
+        # query_emb = self.gen_embs(query_image)
+        query_emb = self._read_npy(os.path.join(self.path_to_embs, f"{query_image_id}.npy"))
+
         distance, id_ = self._faiss_index.search(query_emb, k)
 
 
-        print(distance, id_)
+        final_recoms = []
         for i in id_[0]:
-            print(self.map_required_for_faiss_fetch[i])
+            final_recoms.append(os.path.join(self.path_to_embs, f"{self.map_required_for_faiss_fetch[i]}.jpg"))
+
+        return final_recoms
 
 
 

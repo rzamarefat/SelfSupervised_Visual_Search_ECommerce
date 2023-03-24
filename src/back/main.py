@@ -10,6 +10,11 @@ from glob import glob
 from fastapi import Body
 from fastapi import FastAPI, Request
 from fastapi.encoders import jsonable_encoder
+from Recommender import Recommender
+# import torch
+
+
+rec = Recommender()
 
 class Item(BaseModel):
     id: str
@@ -59,5 +64,24 @@ def root():
 
 @app.post("/item")
 async def item(request: Item):
-    
+    print(request.json())
+    print(type(request.json()))
+    id = request.json().split(":")[1].strip().replace('"', '').replace('"', '').replace('}', '')
+    print("id", id)
+
+    final_recoms = rec.recommend(id)
+
+    data = []
+
+    for fr in final_recoms:
+        with open(fr, "rb") as image_file:
+            data.append({
+                "id":fr.split("/")[-1].split(".")[0],
+                "image": base64.b64encode(image_file.read())
+                })
+
+
+    print("final_recoms", data)
+
     return request.json()
+
