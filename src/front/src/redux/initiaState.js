@@ -1,5 +1,6 @@
 const initialState = {
     "images": [],
+    "focusedItem": null
 }
 
 
