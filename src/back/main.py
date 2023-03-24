@@ -4,20 +4,18 @@ import cv2
 import io
 from starlette.responses import StreamingResponse
 import base64
+import random
+from glob import glob
 
-data = []
-with open("/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/2115.jpg", "rb") as image_file:
-    img_1 = base64.b64encode(image_file.read())
 
-with open("/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/9083.jpg", "rb") as image_file:
-    img_2 = base64.b64encode(image_file.read())
-with open("/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/10023.jpg", "rb") as image_file:
-    img_3 = base64.b64encode(image_file.read())
+def get_random_images():
+    data = []
+    random_images = random.sample([f for f in sorted(glob("/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/images/*"))], 20)
 
-data.append(img_1)
-data.append(img_2)
-data.append(img_3)
-
+    for ri in random_images:
+        with open(ri, "rb") as image_file:
+            data.append(base64.b64encode(image_file.read()))
+    return data
 
 origins = [
     "http://localhost",
@@ -25,6 +23,7 @@ origins = [
 ]
 
 app = FastAPI()
+
 
 
 app.add_middleware(
@@ -41,9 +40,7 @@ def root():
     return {"message": "Root page"}
 
 
-
 @app.get("/explore")
 def root():
-    # res, im_png = cv2.imencode(".png", image)
-    # return StreamingResponse(io.BytesIO(im_png.tobytes()), media_type="image/png")
-    return {"images": [img_1, img_2]}
+    data = get_random_images()
+    return {"images": data}
