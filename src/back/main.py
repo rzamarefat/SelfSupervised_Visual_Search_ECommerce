@@ -80,8 +80,5 @@ async def item(request: Item):
                 "image": base64.b64encode(image_file.read())
                 })
 
-
-    print("final_recoms", data)
-
-    return request.json()
+    return data
 

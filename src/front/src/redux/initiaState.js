@@ -1,6 +1,8 @@
 const initialState = {
     "images": [],
-    "focusedItem": null
+    "focusedItem": null,
+    "recoms": null,
+
 }
 
 

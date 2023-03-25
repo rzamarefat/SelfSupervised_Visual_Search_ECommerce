@@ -15,6 +15,7 @@ class Recommender():
     def __init__(self):
         self.device = 'cpu'
         self.path_to_embs = "/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/simclr_embs"
+        self.path_to_images = "/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/images"
 
         try:
             self._simclr = SimCLRModel()
@@ -85,7 +86,7 @@ class Recommender():
 
         final_recoms = []
         for i in id_[0]:
-            final_recoms.append(os.path.join(self.path_to_embs, f"{self.map_required_for_faiss_fetch[i]}.jpg"))
+            final_recoms.append(os.path.join(self.path_to_images, f"{self.map_required_for_faiss_fetch[i]}.jpg"))
 
         return final_recoms
 

@@ -1,5 +1,5 @@
 import initialState from "./initiaState"
-import { PUT_IMAGES_FROM_BACK_TO_FRONT, SET_FOCUSED_ITEM } from "./actionTypes";
+import { PUT_IMAGES_FROM_BACK_TO_FRONT, SET_FOCUSED_ITEM, SET_RECOMS } from "./actionTypes";
 
 
 const reducer = (state = initialState, action) => {
@@ -14,6 +14,12 @@ const reducer = (state = initialState, action) => {
             return {
                 ...state,
                 focusedItem: action.payload
+            }
+
+        case SET_RECOMS:
+            return {
+                ...state,
+                recoms: action.payload
             }
 
         default:

@@ -16,10 +16,6 @@ const ExplorePage = () => {
         axios.get("http://127.0.0.1:8000/explore")
         .then(res => {
             console.log(res)
-            console.log("========")
-            console.log(res.data.images)
-            console.log(images)
-            console.log("========")
             dispatch(putImages([res.data.images]))
 
         })
