@@ -11,6 +11,10 @@ import Loader from '../components/Loader'
 const ExplorePage = () => {
     const dispatch = useDispatch()
     const images = useSelector(state => state.images[0])
+    const exploreOrFocus = useSelector(state => state.exploreOrFocus)
+    
+
+
 
     useEffect(()=>{
         axios.get("http://127.0.0.1:8000/explore")
@@ -37,6 +41,9 @@ const ExplorePage = () => {
                     </div>
                 </row>
             </div>
+
+            
+            
             
             
         </>

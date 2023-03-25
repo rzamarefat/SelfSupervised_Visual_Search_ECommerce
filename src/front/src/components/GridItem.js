@@ -1,6 +1,6 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
-import { setFocusedImage, setRecoms } from '../redux/actions'
+import { setExploreOrFocus, setFocusedImage, setRecoms } from '../redux/actions'
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios'
 
@@ -24,6 +24,7 @@ const GridItem = ({img}) => {
         .then(res => {
             console.log(res)
             dispatch(setRecoms(res.data))
+            dispatch(setExploreOrFocus("focus"))
             navigate("/focus")
 
         })

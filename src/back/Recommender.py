@@ -9,6 +9,7 @@ import faiss
 import numpy as np
 import faiss
 from glob import glob
+from tqdm import tqdm
 import os
 
 class Recommender():
@@ -33,6 +34,7 @@ class Recommender():
         
 
         self._build_faiss()
+        print("======> Done with the FAISS!")
         
 
         self._input_size = 128
@@ -48,14 +50,19 @@ class Recommender():
         # ])
 
     def _build_faiss(self):
-
+        print("=====> Applications is making the FAISS part.")
         self._faiss_index = faiss.IndexFlatIP(self._embs_dim)
 
-        embs = [(self._read_npy(f), f.split("/")[-1].split(".")[0]) for f in sorted(glob(os.path.join(self.path_to_embs, "*")))]
+        embs = [(f, f.split("/")[-1].split(".")[0]) for f in sorted(glob(os.path.join(self.path_to_embs, "*")))]
+        print("=====> Number of images in database", len(embs))
 
         
+        limit_for_gallery = 200
         self.map_required_for_faiss_fetch = {}
-        for index, (emb_f, emb_name) in enumerate(embs):
+        for index, (emb_f, emb_name) in tqdm(enumerate(embs), total=len(embs)):
+            if index >= limit_for_gallery:
+                break
+            emb_f = self._read_npy(emb_f)
             self._faiss_index.add(emb_f)
             self.map_required_for_faiss_fetch[index] = emb_name
 
@@ -97,3 +104,4 @@ if __name__ == "__main__":
     path_to_image = "/home/rzamarefat/projects/github_projects/Recom/SimCLR_Visual_Search_React/src/back/10023.jpg"
     img = Image.open(path_to_image)
     r.recommend(img)
+    print()

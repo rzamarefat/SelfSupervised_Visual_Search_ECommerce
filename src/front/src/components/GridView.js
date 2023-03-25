@@ -12,7 +12,7 @@ const GridView = ({images}) => {
                 {images.map(img => {
                     return (
                         <>
-                            
+                            {console.log("inside explore", img)}
                             <div className='col-sm-3'>
                                 <GridItem img={img}/>
                             </div>

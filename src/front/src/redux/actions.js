@@ -1,4 +1,4 @@
-import { PUT_IMAGES_FROM_BACK_TO_FRONT, SET_FOCUSED_ITEM, SET_RECOMS } from "./actionTypes"
+import { PUT_IMAGES_FROM_BACK_TO_FRONT, SET_EXPLORE_OR_FOCUS, SET_FOCUSED_ITEM, SET_RECOMS } from "./actionTypes"
 
 
 export const putImages = (images) => {
@@ -20,5 +20,13 @@ export const setRecoms = (recoms) => {
     return {
         type: SET_RECOMS,
         payload: recoms
+    }
+}
+
+
+export const setExploreOrFocus = (n) => {
+    return {
+        type: SET_EXPLORE_OR_FOCUS,
+        payload: n
     }
 }

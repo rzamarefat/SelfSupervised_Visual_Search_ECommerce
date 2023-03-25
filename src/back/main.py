@@ -11,7 +11,7 @@ from fastapi import Body
 from fastapi import FastAPI, Request
 from fastapi.encoders import jsonable_encoder
 from Recommender import Recommender
-# import torch
+import os
 
 
 rec = Recommender()
@@ -22,9 +22,10 @@ class Item(BaseModel):
 
 def get_random_images():
     data = []
-    random_images = random.sample([f for f in sorted(glob("/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/images/*"))], 20)
+    random_images = random.sample([f for f in sorted(glob("/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/images/*"))], 2)
 
     for ri in random_images:
+        print("ri", ri)
         with open(ri, "rb") as image_file:
             data.append({
                 "id":ri.split("/")[-1].split(".")[0],
@@ -59,26 +60,47 @@ def root():
 @app.get("/explore")
 def root():
     data = get_random_images()
+    print("inside root")
+    print("type(data)", type(data))
     return {"images": data}
 
 
 @app.post("/item")
-async def item(request: Item):
-    print(request.json())
-    print(type(request.json()))
+def item(request: Item):
     id = request.json().split(":")[1].strip().replace('"', '').replace('"', '').replace('}', '')
-    print("id", id)
 
-    final_recoms = rec.recommend(id)
+    final_recoms = rec.recommend(id, k=2)
+    
 
+
+    if os.path.isfile("./RECOMS.txt"):
+        os.remove("./RECOMS.txt")
+
+    with open("./RECOMS.txt", "a+") as h:
+        for f in final_recoms:
+            h.seek(0)
+            h.writelines(f + "\n")
+    print("===========done wrinting recoms")
+
+    
+    return None
+
+@app.get("/item")
+def item():
+    print("reading recoms")
+    with open("./RECOMS.txt", "r") as h:
+        recoms = [l.replace("\n", "") for l in h.readlines()]
+    
     data = []
-
-    for fr in final_recoms:
-        with open(fr, "rb") as image_file:
+    for r in recoms:
+        with open(r, "rb") as image_file:
             data.append({
-                "id":fr.split("/")[-1].split(".")[0],
+                "id":r.split("/")[-1].split(".")[0],
                 "image": base64.b64encode(image_file.read())
                 })
+            
+    return {"images": data}
 
-    return data
+
+
 
