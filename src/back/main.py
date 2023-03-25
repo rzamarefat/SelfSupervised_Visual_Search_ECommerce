@@ -22,7 +22,7 @@ class Item(BaseModel):
 
 def get_random_images():
     data = []
-    random_images = random.sample([f for f in sorted(glob("/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/images/*"))], 50)
+    random_images = random.sample([f for f in sorted(glob("/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/images/*"))], 10)
 
     for ri in random_images:
         print("ri", ri)

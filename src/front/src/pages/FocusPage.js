@@ -34,15 +34,24 @@ const FocusPage = () => {
 
                     </div>    
                 </div>
-                <div className="row  h-100 d-flex align-items-center justify-content-center">
-                    <div className='col-sm-5'>
-                        {recoms.map(rec => {
-                            return (<GridItem img={rec}/>)
-                        })}
+                <hr/>
+                <div className='row'>
+                {recoms.map(img => {
+                    return (
+                        <>
+                            <div className='col-sm-3'>
+                                <GridItem img={img}/>
+                            </div>
+                            
+                        </>
                         
-                    </div>    
-                </div>
+
+                    )
+                })}
+                
+            </div>
             </div>}
+
         </>
     )
 }

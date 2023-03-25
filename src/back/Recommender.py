@@ -17,7 +17,7 @@ class Recommender():
         self.device = 'cpu'
         self.path_to_embs = "/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/simclr_embs"
         self.path_to_images = "/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/images"
-        self._limit_for_gallery = 14000
+        self._limit_for_gallery = 16000
 
         try:
             self._simclr = SimCLRModel()
