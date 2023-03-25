@@ -13,7 +13,8 @@ const reducer = (state = initialState, action) => {
         case SET_FOCUSED_ITEM:
             return {
                 ...state,
-                focusedItem: action.payload
+                focusedItem: action.payload.id,
+                focusedItemImage: action.payload.image
             }
 
         case SET_RECOMS:

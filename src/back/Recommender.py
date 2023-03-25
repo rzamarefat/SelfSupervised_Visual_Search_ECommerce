@@ -17,6 +17,7 @@ class Recommender():
         self.device = 'cpu'
         self.path_to_embs = "/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/simclr_embs"
         self.path_to_images = "/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/images"
+        self._limit_for_gallery = 14000
 
         try:
             self._simclr = SimCLRModel()
@@ -57,10 +58,10 @@ class Recommender():
         print("=====> Number of images in database", len(embs))
 
         
-        limit_for_gallery = 200
+        
         self.map_required_for_faiss_fetch = {}
         for index, (emb_f, emb_name) in tqdm(enumerate(embs), total=len(embs)):
-            if index >= limit_for_gallery:
+            if index >= self._limit_for_gallery:
                 break
             emb_f = self._read_npy(emb_f)
             self._faiss_index.add(emb_f)

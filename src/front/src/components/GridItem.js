@@ -5,11 +5,15 @@ import {useNavigate} from 'react-router-dom';
 import axios from 'axios'
 
 const GridItem = ({img}) => {
+    console.log("---->", img)
     const dispatch = useDispatch()
     const navigate = useNavigate();
 
     const handleClick = (img) => {
-        dispatch(setFocusedImage(img.id))
+        dispatch(setFocusedImage({
+            id: img.id,
+            image:img.image
+        }))
 
         const body = JSON.stringify({
             "id": img.id
@@ -22,13 +26,25 @@ const GridItem = ({img}) => {
         
         axios.post(`http://127.0.0.1:8000/item`, body, config)
         .then(res => {
+            console.log("**************")
             console.log(res)
-            dispatch(setRecoms(res.data))
-            dispatch(setExploreOrFocus("focus"))
             navigate("/focus")
-
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+            console.log("**************")
+            console.log(err)
+        })
+
+        // axios.get("http://127.0.0.1:8000/item")
+        // .then(res => {
+        //     console.log(res)
+        //     dispatch(setRecoms(res.data))
+
+        // })
+        // .catch(err => console.log(err))
+
+        
+
     }
 
     return (

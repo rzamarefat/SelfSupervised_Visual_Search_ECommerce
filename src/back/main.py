@@ -22,7 +22,7 @@ class Item(BaseModel):
 
 def get_random_images():
     data = []
-    random_images = random.sample([f for f in sorted(glob("/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/images/*"))], 2)
+    random_images = random.sample([f for f in sorted(glob("/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/images/*"))], 50)
 
     for ri in random_images:
         print("ri", ri)
@@ -69,7 +69,7 @@ def root():
 def item(request: Item):
     id = request.json().split(":")[1].strip().replace('"', '').replace('"', '').replace('}', '')
 
-    final_recoms = rec.recommend(id, k=2)
+    final_recoms = rec.recommend(id, k=20)
     
 
 
@@ -98,7 +98,7 @@ def item():
                 "id":r.split("/")[-1].split(".")[0],
                 "image": base64.b64encode(image_file.read())
                 })
-            
+    
     return {"images": data}
 
 
