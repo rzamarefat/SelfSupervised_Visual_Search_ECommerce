@@ -13,7 +13,13 @@ A fullstack vision-based web application for recommending similar products
 - Mark-up and style: HTML/CSS/Bootstrap
 
 #### Overall procedure
+```
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/79300456/227770648-9d85a8a2-5dbc-48ea-8245-7bcb14926a6c.jpg" />
+</p>
+```
 ![github_simclr_visual_search](https://user-images.githubusercontent.com/79300456/227770648-9d85a8a2-5dbc-48ea-8245-7bcb14926a6c.jpg)
+
 
 #### Instruction to set-up
 - In the src directory you can find the related setup instruction for back and frontend seperately. 
