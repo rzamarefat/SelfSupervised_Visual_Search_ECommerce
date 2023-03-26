@@ -20,7 +20,7 @@ A fullstack vision-based web application for recommending similar products
 - It requires common steps taken in any React and FastAPI app. So don't worry.
 
 #### Dataset:
-- [link](https://www.kaggle.com/datasets/paramaggarwal/fashion-product-images-dataset)
+- [Fashion Product Images Dataset](https://www.kaggle.com/datasets/paramaggarwal/fashion-product-images-dataset)
 
 #### Pre-Trained weights:
 - In the src/back directory you can find a file named 'epoch=19-step=2960.ckpt'
