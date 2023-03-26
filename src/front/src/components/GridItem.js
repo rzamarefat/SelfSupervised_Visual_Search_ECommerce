@@ -33,17 +33,7 @@ const GridItem = ({img}) => {
         .catch(err => {
             console.log("**************")
             console.log(err)
-        })
-
-        // axios.get("http://127.0.0.1:8000/item")
-        // .then(res => {
-        //     console.log(res)
-        //     dispatch(setRecoms(res.data))
-
-        // })
-        // .catch(err => console.log(err))
-
-        
+        })        
 
     }
 

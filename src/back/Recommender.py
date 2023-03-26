@@ -40,7 +40,7 @@ class Recommender():
 
         self._input_size = 128
         
-
+        
         # self.test_transforms = torchvision.transforms.Compose([
         #                 torchvision.transforms.Resize((self._input_size, self._input_size)),
         #                 torchvision.transforms.ToTensor(),
