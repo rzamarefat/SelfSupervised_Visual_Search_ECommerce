@@ -1,9 +1,6 @@
 import torch
 from SimCLR import SimCLRModel
-import torchvision
-import cv2
 from PIL import Image
-import lightly
 from sklearn.preprocessing import normalize
 import faiss
 import numpy as np
@@ -11,17 +8,20 @@ import faiss
 from glob import glob
 from tqdm import tqdm
 import os
+import torchvision
+import lightly
+from config import PATH_TO_EMBS, PATH_TO_IMAGES, PATH_TO_PRETRAINED_WEIGHTS
 
 class Recommender():
     def __init__(self):
         self.device = 'cpu'
-        self.path_to_embs = "/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/simclr_embs"
-        self.path_to_images = "/media/rzamarefat/New Volume/My_Datasets/big/fashion-dataset/images"
+        self.path_to_embs = PATH_TO_EMBS
+        self.path_to_images = PATH_TO_IMAGES
         self._limit_for_gallery = 16000
 
         try:
             self._simclr = SimCLRModel()
-            self.path_to_weights = "/home/rzamarefat/projects/github_projects/Recom/SimCLR_Visual_Search_React/src/back/epoch=19-step=2960.ckpt"
+            self.path_to_weights = PATH_TO_PRETRAINED_WEIGHTS
             self.ckpt = torch.load(self.path_to_weights, map_location=torch.device('cpu'))
             self._simclr.load_state_dict(self.ckpt['state_dict'])
             self._simclr.eval()
@@ -67,12 +67,15 @@ class Recommender():
             self._faiss_index.add(emb_f)
             self.map_required_for_faiss_fetch[index] = emb_name
 
+
     def gen_embs(self, image):
-        # image = self.test_transforms(image)
+        image = self.test_transforms(image)
         image = torch.unsqueeze(image, dim=0)
 
         image = image.to(self.device)
+        
         emb = self._simclr.backbone(image).flatten(start_dim=1)
+        
         emb = emb.to('cpu').detach().numpy()
         emb = normalize(emb)
 
@@ -102,7 +105,9 @@ class Recommender():
 
 if __name__ == "__main__":
     r = Recommender()
-    path_to_image = "/home/rzamarefat/projects/github_projects/Recom/SimCLR_Visual_Search_React/src/back/10023.jpg"
+    path_to_image = "/home/rzamarefat/projects/github_projects/Recom/SimCLR_Visual_Search_React/src/back/2115.jpg"
     img = Image.open(path_to_image)
-    r.recommend(img)
+    # r.recommend(img)
+    r.gen_embs(img)
+
     print()
