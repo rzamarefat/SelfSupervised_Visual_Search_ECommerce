@@ -11,12 +11,15 @@ import os
 import torchvision
 import lightly
 from config import PATH_TO_EMBS, PATH_TO_IMAGES, PATH_TO_PRETRAINED_WEIGHTS
+import torchvision
+from BYOL import BYOL
 
 
 class Recommender():
     def __init__(self):
         self.device = 'cpu'
-        self.path_to_embs = PATH_TO_EMBS
+        self.path_to_embs_simclr = PATH_TO_EMBS_SIMCLR
+        self.path_to_embs_byol = PATH_TO_EMBS_BYOL
         self.path_to_images = PATH_TO_IMAGES
         self._limit_for_gallery = 1000
 
@@ -29,7 +32,14 @@ class Recommender():
             self._simclr.to(self.device)
             print("=====> Pretrained weights loaded successfully")
         except Exception as e:
-            print("=====> Sth went wrong in loading pretrained weights")
+            print("=====> Sth went wrong in loading pretrained weights SimCLR")
+            print(e)
+
+        try:
+            torchvision.models.resnet18(pretrained=False)
+            model = BYOL(model, in_features=512, batch_norm_mlp=True)
+        except Exception as e:
+            print("=====> Sth went wrong in loading pretrained weights BYOL")
             print(e)
         
         self._embs_dim = 512
@@ -53,20 +63,29 @@ class Recommender():
 
     def _build_faiss(self):
         print("=====> Applications is making the FAISS part.")
-        self._faiss_index = faiss.IndexFlatIP(self._embs_dim)
+        self._faiss_index_simclr = faiss.IndexFlatIP(self._embs_dim)
+        self._faiss_index_byol = faiss.IndexFlatIP(self._embs_dim)
 
         embs = [(f, f.split("/")[-1].split(".")[0]) for f in sorted(glob(os.path.join(self.path_to_embs, "*")))]
         print("=====> Number of images in database", len(embs))
 
         
-        
-        self.map_required_for_faiss_fetch = {}
+        self.map_required_for_faiss_fetch_simclr = {}
         for index, (emb_f, emb_name) in tqdm(enumerate(embs), total=len(embs)):
             if index >= self._limit_for_gallery:
                 break
             emb_f = self._read_npy(emb_f)
-            self._faiss_index.add(emb_f)
-            self.map_required_for_faiss_fetch[index] = emb_name
+            self._faiss_index_simclr.add(emb_f)
+            self.map_required_for_faiss_fetch_simclr[index] = emb_name
+
+
+        self.map_required_for_faiss_fetch_byol = {}
+        for index, (emb_f, emb_name) in tqdm(enumerate(embs), total=len(embs)):
+            if index >= self._limit_for_gallery:
+                break
+            emb_f = self._read_npy(emb_f)
+            self._faiss_index_byol.add(emb_f)
+            self.map_required_for_faiss_fetch_byol[index] = emb_name
 
 
     def gen_embs(self, image):
@@ -90,15 +109,21 @@ class Recommender():
 
 
     def recommend(self, query_image_id, emb_approach="SIMCLR", k=10):
-        # query_emb = self.gen_embs(query_image)
-        query_emb = self._read_npy(os.path.join(self.path_to_embs, f"{query_image_id}.npy"))
-
-        distance, id_ = self._faiss_index.search(query_emb, k)
-
-
         final_recoms = []
-        for i in id_[0]:
-            final_recoms.append(os.path.join(self.path_to_images, f"{self.map_required_for_faiss_fetch[i]}.jpg"))
+
+        if emb_approach == "SIMCLR":
+            query_emb = self._read_npy(os.path.join(self.path_to_embs_simclr, f"{query_image_id}.npy"))
+            distance, id_ = self._faiss_index_simclr.search(query_emb, k)    
+            for i in id_[0]:
+                final_recoms.append(os.path.join(self.path_to_images, f"{self.map_required_for_faiss_fetch_simclr[i]}.jpg"))
+
+        elif emb_approach == "BYOL":
+            query_emb = self._read_npy(os.path.join(self.path_to_embs_byol, f"{query_image_id}.npy"))
+            distance, id_ = self._faiss_index_byol.search(query_emb, k)
+            for i in id_[0]:
+                final_recoms.append(os.path.join(self.path_to_images, f"{self.map_required_for_faiss_fetch_byol[i]}.jpg"))
+        else:
+            raise NotImplementedError("Please provide a valid emb generator (options: SIMCLR/BYOL)")
 
         return final_recoms
 
