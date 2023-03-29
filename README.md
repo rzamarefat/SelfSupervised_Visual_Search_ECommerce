@@ -1,4 +1,4 @@
-# SimCLR Visual Search
+# Self-Supervised Visual Search Ecommerce
 #### Description
 A fullstack vision-based web application for recommending similar products
 
