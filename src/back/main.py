@@ -94,8 +94,6 @@ def item():
     with open("./RECOMS.txt", "r") as h:
         data = [l for l in h.readlines()]
 
-    emb_approach = [l.replace("\n", "") for l in data if l.__contains__("EMB_APPROACH")][0].split(" ")[1]
-
     recoms = [l.replace("\n", "") for l in data if not(l.__contains__("EMB_APPROACH"))]
     
 
