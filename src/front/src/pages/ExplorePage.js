@@ -5,16 +5,14 @@ import Navbar from '../components/GridView'
 import axios from 'axios'
 import { putImages } from '../redux/actions'
 import Loader from '../components/Loader'
-
+import {useNavigate} from 'react-router-dom';
 
 
 const ExplorePage = () => {
     const dispatch = useDispatch()
     const images = useSelector(state => state.images[0])
-    const exploreOrFocus = useSelector(state => state.exploreOrFocus)
-    
-
-
+    const embApproach = useSelector(state => state.embApproach)
+    const navigate = useNavigate();
 
     useEffect(()=>{
         axios.get("http://127.0.0.1:8000/explore")
@@ -24,7 +22,7 @@ const ExplorePage = () => {
 
         })
         .catch(err => console.log(err))
-    }, [])
+    }, [embApproach])
         
 
     return (
@@ -34,6 +32,9 @@ const ExplorePage = () => {
                     <div className='col d-flex align-items-center justify-content-center flex-column'>
                         <div className='p-5'>
                             <h1>Explore</h1>    
+                        </div>
+                        <div>
+                            <div className="btn bg-dark text-light" onClick={() => navigate("/config")}>Configuration</div>
                         </div>
                         <hr/>
                         {!images && <Loader/>}

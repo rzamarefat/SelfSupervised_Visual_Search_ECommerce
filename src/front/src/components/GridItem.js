@@ -1,5 +1,5 @@
 import React from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { setExploreOrFocus, setFocusedImage, setRecoms } from '../redux/actions'
 import {useNavigate} from 'react-router-dom';
 import axios from 'axios'
@@ -8,6 +8,7 @@ const GridItem = ({img}) => {
     console.log("---->", img)
     const dispatch = useDispatch()
     const navigate = useNavigate();
+    const embApproach = useSelector(state => state.embApproach)
 
     const handleClick = (img) => {
         dispatch(setFocusedImage({
@@ -16,7 +17,8 @@ const GridItem = ({img}) => {
         }))
 
         const body = JSON.stringify({
-            "id": img.id
+            "id": img.id,
+            "embApproach": embApproach
         }) 
         const config = {
             headers: {

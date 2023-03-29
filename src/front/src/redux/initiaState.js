@@ -8,6 +8,8 @@ const initialState = {
 
     "recoms": [],
 
+    "embApproach": "SIMCLR"
+
 }
 
 

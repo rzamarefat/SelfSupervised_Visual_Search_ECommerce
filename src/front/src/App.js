@@ -4,6 +4,7 @@ import Store from './redux/store'
 
 import ExplorePage from "./pages/ExplorePage"
 import FocusPage from "./pages/FocusPage"
+import ConfigPage from "./pages/ConfigPage"
 
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
                 <Routes>
                     <Route path="/" element={<ExplorePage />} />
                     <Route path="/focus" element={<FocusPage />} />
+                    <Route path="/config" element={<ConfigPage/>} />
                 </Routes>
             </Router>
         </Provider>

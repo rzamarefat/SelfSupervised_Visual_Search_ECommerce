@@ -12,12 +12,13 @@ import torchvision
 import lightly
 from config import PATH_TO_EMBS, PATH_TO_IMAGES, PATH_TO_PRETRAINED_WEIGHTS
 
+
 class Recommender():
     def __init__(self):
         self.device = 'cpu'
         self.path_to_embs = PATH_TO_EMBS
         self.path_to_images = PATH_TO_IMAGES
-        self._limit_for_gallery = 16000
+        self._limit_for_gallery = 1000
 
         try:
             self._simclr = SimCLRModel()
@@ -88,7 +89,7 @@ class Recommender():
         return data
 
 
-    def recommend(self, query_image_id, k=10):
+    def recommend(self, query_image_id, emb_approach="SIMCLR", k=10):
         # query_emb = self.gen_embs(query_image)
         query_emb = self._read_npy(os.path.join(self.path_to_embs, f"{query_image_id}.npy"))
 

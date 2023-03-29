@@ -1,4 +1,4 @@
-import { PUT_IMAGES_FROM_BACK_TO_FRONT, SET_EXPLORE_OR_FOCUS, SET_FOCUSED_ITEM, SET_RECOMS } from "./actionTypes"
+import { PUT_IMAGES_FROM_BACK_TO_FRONT, SET_EMBEDDING_APPROACH, SET_EXPLORE_OR_FOCUS, SET_FOCUSED_ITEM, SET_RECOMS } from "./actionTypes"
 
 
 export const putImages = (images) => {
@@ -30,5 +30,13 @@ export const setExploreOrFocus = (n) => {
     return {
         type: SET_EXPLORE_OR_FOCUS,
         payload: n
+    }
+}
+
+
+export const setEmbApproach = (approachName)=>{
+    return {
+        type: SET_EMBEDDING_APPROACH,
+        payload: approachName
     }
 }
