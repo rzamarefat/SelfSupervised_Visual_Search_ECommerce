@@ -30,7 +30,9 @@ A fullstack vision-based web application for recommending similar products
 
 #### Refs:
 - [SimCLR paper](https://arxiv.org/abs/2002.05709)
-- For SimCLR implementation, I have lost the link and now I can't find where I previously saw it.
 - [BYOL paper](https://arxiv.org/abs/2006.07733)
+- For SimCLR implementation, I have lost the link and now I can't find where I previously saw it.
+- [SimCLR - AI Summer](https://theaisummer.com/simclr/)
+- [BYOL - AI Summer](https://theaisummer.com/byol/)
 
 
