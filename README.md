@@ -7,7 +7,9 @@ A fullstack vision-based web application for recommending similar products
 
 
 #### Technologies
+- Self-Supervised approaches: SimCLR, BYOL
 - Deep Learning: Pytorch
+- Similarity search: [FAISS] (https://github.com/facebookresearch/faiss)
 - Backend: FastAPI
 - Frontend: React JS and Redux
 - Mark-up and style: HTML/CSS/Bootstrap
@@ -27,14 +29,8 @@ A fullstack vision-based web application for recommending similar products
 - In the src/back directory you can find a file named 'epoch=19-step=2960.ckpt'
 
 #### Refs:
-- [SimCLR](https://arxiv.org/abs/2002.05709)
-- For SimCLR I have lost the link and now I can't find where I previously saw it.
-
-
-
-
-
-
-uvicorn main:app --reload
+- [SimCLR paper](https://arxiv.org/abs/2002.05709)
+- For SimCLR implementation, I have lost the link and now I can't find where I previously saw it.
+- [BYOL paper](https://arxiv.org/abs/2006.07733)
 
 
