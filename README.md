@@ -9,7 +9,7 @@ A fullstack vision-based web application for recommending similar products
 #### Technologies
 - Self-Supervised approaches: SimCLR, BYOL
 - Deep Learning: Pytorch
-- Similarity search: [FAISS] (https://github.com/facebookresearch/faiss)
+- Similarity search: [FAISS](https://github.com/facebookresearch/faiss)
 - Backend: FastAPI
 - Frontend: React JS and Redux
 - Mark-up and style: HTML/CSS/Bootstrap
