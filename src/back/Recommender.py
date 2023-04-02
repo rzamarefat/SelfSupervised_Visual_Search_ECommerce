@@ -52,14 +52,14 @@ class Recommender():
         self._input_size = 128
         
         
-        # self.test_transforms = torchvision.transforms.Compose([
-        #                 torchvision.transforms.Resize((self._input_size, self._input_size)),
-        #                 torchvision.transforms.ToTensor(),
-        #                 torchvision.transforms.Normalize(
-        #                     mean=lightly.data.collate.imagenet_normalize['mean'],
-        #                     std=lightly.data.collate.imagenet_normalize['std'],
-        #                 )
-        # ])
+        self.test_transforms = torchvision.transforms.Compose([
+                        torchvision.transforms.Resize((self._input_size, self._input_size)),
+                        torchvision.transforms.ToTensor(),
+                        torchvision.transforms.Normalize(
+                            mean=lightly.data.collate.imagenet_normalize['mean'],
+                            std=lightly.data.collate.imagenet_normalize['std'],
+                        )
+        ])
 
     def _build_faiss(self):
         print("=====> Applications is making the FAISS part.")
@@ -87,20 +87,6 @@ class Recommender():
             emb_f = self._read_npy(emb_f)
             self._faiss_index_byol.add(emb_f)
             self.map_required_for_faiss_fetch_byol[index] = emb_name
-
-
-    def gen_embs(self, image):
-        image = self.test_transforms(image)
-        image = torch.unsqueeze(image, dim=0)
-
-        image = image.to(self.device)
-        
-        emb = self._simclr.backbone(image).flatten(start_dim=1)
-        
-        emb = emb.to('cpu').detach().numpy()
-        emb = normalize(emb)
-
-        return emb
     
     def _read_npy(self, abs_path):
         with open(abs_path, "rb") as handle:
