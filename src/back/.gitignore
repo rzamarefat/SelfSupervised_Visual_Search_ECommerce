@@ -1,3 +1,5 @@
 venv
 *.jpg
 RECOMS.txt
+BYOL.ckpt
+SIMCLR.ckpt

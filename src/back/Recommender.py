@@ -1,7 +1,5 @@
-import torch
-from SimCLR import SimCLRModel
 from PIL import Image
-from sklearn.preprocessing import normalize
+
 import faiss
 import numpy as np
 import faiss
@@ -10,7 +8,7 @@ from tqdm import tqdm
 import os
 import torchvision
 import lightly
-from config import PATH_TO_EMBS_SIMCLR,PATH_TO_EMBS_BYOL, PATH_TO_IMAGES, PATH_TO_PRETRAINED_WEIGHTS
+from config import PATH_TO_EMBS_SIMCLR,PATH_TO_EMBS_BYOL, PATH_TO_IMAGES
 import torchvision
 from BYOL import BYOL
 
@@ -22,18 +20,6 @@ class Recommender():
         self.path_to_embs_byol = PATH_TO_EMBS_BYOL
         self.path_to_images = PATH_TO_IMAGES
         self._limit_for_gallery = 16000
-
-        try:
-            self._simclr = SimCLRModel()
-            self.path_to_weights = PATH_TO_PRETRAINED_WEIGHTS
-            self.ckpt = torch.load(self.path_to_weights, map_location=torch.device('cpu'))
-            self._simclr.load_state_dict(self.ckpt['state_dict'])
-            self._simclr.eval()
-            self._simclr.to(self.device)
-            print("=====> Pretrained weights loaded successfully")
-        except Exception as e:
-            print("=====> Sth went wrong in loading pretrained weights SimCLR")
-            print(e)
 
         try:
             torchvision.models.resnet18(pretrained=False)
@@ -48,18 +34,8 @@ class Recommender():
         self._build_faiss()
         print("======> Done with the FAISS!")
         
-
-        self._input_size = 128
         
         
-        self.test_transforms = torchvision.transforms.Compose([
-                        torchvision.transforms.Resize((self._input_size, self._input_size)),
-                        torchvision.transforms.ToTensor(),
-                        torchvision.transforms.Normalize(
-                            mean=lightly.data.collate.imagenet_normalize['mean'],
-                            std=lightly.data.collate.imagenet_normalize['std'],
-                        )
-        ])
 
     def _build_faiss(self):
         print("=====> Applications is making the FAISS part.")
