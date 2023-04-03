@@ -35,18 +35,18 @@ test_transforms = torchvision.transforms.Compose([
 
 
 
-def gen_embs(image):
-        image = test_transforms(image)
-        image = torch.unsqueeze(image, dim=0)
+def gen_emb(image):
+    image = test_transforms(image)
+    image = torch.unsqueeze(image, dim=0)
 
-        image = image.to(device)
-        
-        emb = simclr.backbone(image).flatten(start_dim=1)
-        
-        emb = emb.to('cpu').detach().numpy()
-        emb = normalize(emb)
+    image = image.to(device)
+    
+    emb = simclr.backbone(image).flatten(start_dim=1)
+    
+    emb = emb.to('cpu').detach().numpy()
+    emb = normalize(emb)
 
-        return emb
+    return emb
 
 
 def generate_gallery_embs(root_path_to_images, root_path_to_save):
@@ -61,7 +61,7 @@ def generate_gallery_embs(root_path_to_images, root_path_to_save):
         img_name = img_p.split("/")[-1].split(".")[0]
 
         try:
-            emb = gen_embs(img)
+            emb = gen_emb(img)
             np.save(os.path.join(root_path_to_save, f"{img_name}.npy"), emb)
         except Exception as e:
             print(e)
